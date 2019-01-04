@@ -9,7 +9,7 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-from pygcn.utils import load_data, accuracy
+from utils import load_data, accuracy, load_data_paper
 from pygcn.models import GCN
 
 # Training settings
@@ -38,9 +38,16 @@ torch.manual_seed(args.seed)
 if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
+# Load paper dataset
+adj, features, labels, idx_train, idx_val, idx_test = load_data_paper('cora')
+print(labels.shape)
+print(idx_train.shape, idx_val.shape, idx_test.shape)
 # Load data
-adj, features, labels, idx_train, idx_val, idx_test = load_data()
+# adj, features, labels, idx_train, idx_val, idx_test = load_data()
+# print(labels.shape)
+# print(idx_train.shape, idx_val.shape, idx_test.shape)
 
+# exit(0)
 # Model and optimizer
 model = GCN(nfeat=features.shape[1],
             nhid=args.hidden,
