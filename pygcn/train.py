@@ -39,9 +39,8 @@ if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
 # Load paper dataset
-adj, features, labels, idx_train, idx_val, idx_test = load_data_paper('cora')
-print(labels.shape)
-print(idx_train.shape, idx_val.shape, idx_test.shape)
+adj, features, labels, idx_train, idx_val, idx_test = load_data_paper('citeseer')
+
 # Load data
 # adj, features, labels, idx_train, idx_val, idx_test = load_data()
 # print(labels.shape)
@@ -95,6 +94,8 @@ def train(epoch):
 def test():
     model.eval()
     output = model(features, adj)
+    print('output size ', output.shape)
+    print('label size ', labels.shape)
     loss_test = F.nll_loss(output[idx_test], labels[idx_test])
     acc_test = accuracy(output[idx_test], labels[idx_test])
     print("Test set results:",

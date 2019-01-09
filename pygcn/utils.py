@@ -43,7 +43,14 @@ def normalize_adj(adj):
     d_mat_inv_sqrt = sp.diags(d_inv_sqrt)
     return adj.dot(d_mat_inv_sqrt).transpose().dot(d_mat_inv_sqrt).tocoo()
 
-
+def np_where(matrix):
+    np_arr = np.zeros(matrix.shape[0])
+    for idx, row in enumerate(matrix):
+        for eid, item in enumerate(row):
+            if item == 1.0:
+                np_arr[idx] = eid
+                break
+    return np_arr
 
 def load_data_paper(dataset_str):
     """
@@ -98,7 +105,7 @@ def load_data_paper(dataset_str):
 
     labels = np.vstack((ally, ty))
     labels[test_idx_reorder, :] = labels[test_idx_range, :]
-    labels = torch.LongTensor(np.where(labels)[1])
+    labels = torch.LongTensor(np_where(labels))
 
     idx_test = test_idx_range.tolist()
     idx_train = range(len(y))
